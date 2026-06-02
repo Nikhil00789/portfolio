@@ -48,9 +48,11 @@ export default function Contact() {
     const errs = {};
     if (!form.name.trim()) errs.name = "Name is required";
     if (!form.email.trim()) errs.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Enter a valid email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      errs.email = "Enter a valid email";
     if (!form.message.trim()) errs.message = "Message is required";
-    else if (form.message.trim().length < 10) errs.message = "Message too short (min 10 chars)";
+    else if (form.message.trim().length < 10)
+      errs.message = "Message too short (min 10 chars)";
     return errs;
   };
 
@@ -68,7 +70,10 @@ export default function Contact() {
     try {
       const res = await fetch("https://formspree.io/f/xgoqgnnl", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
@@ -76,7 +81,9 @@ export default function Contact() {
         }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
         setStatus("success");
         setForm({ name: "", email: "", message: "" });
         setTimeout(() => setStatus(null), 5000);
@@ -84,15 +91,23 @@ export default function Contact() {
         setStatus("error");
         setTimeout(() => setStatus(null), 4000);
       }
-    } catch {
+    } catch (err) {
       setStatus("error");
       setTimeout(() => setStatus(null), 4000);
     }
   };
 
   return (
-    <section id="contact" className="py-28 px-6 relative" style={{ backgroundColor: "rgba(13,19,33,0.4)" }} ref={sectionRef}>
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, #1e2d45, transparent)" }} />
+    <section
+      id="contact"
+      className="py-28 px-6 relative"
+      style={{ backgroundColor: "rgba(13,19,33,0.4)" }}
+      ref={sectionRef}
+    >
+      <div
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, #1e2d45, transparent)" }}
+      />
 
       <div className="max-w-5xl mx-auto">
 
@@ -102,7 +117,8 @@ export default function Contact() {
           <h2 className="section-heading">Get In Touch</h2>
           <div className="gradient-line w-24 mt-4 mx-auto" />
           <p className="font-body text-txt-muted text-base mt-6 max-w-xl mx-auto leading-relaxed">
-            Whether you have a project in mind, a job opportunity, or just want to say hello — my inbox is always open.
+            Whether you have a project in mind, a job opportunity, or just want
+            to say hello — my inbox is always open.
           </p>
         </div>
 
@@ -111,7 +127,9 @@ export default function Contact() {
           {/* Left — Contact Info + Terminal */}
           <div className="flex flex-col gap-6">
             <div className="reveal">
-              <h3 className="font-display text-lg font-bold text-white mb-5">Contact Details</h3>
+              <h3 className="font-display text-lg font-bold text-white mb-5">
+                Contact Details
+              </h3>
               <div className="flex flex-col gap-3">
                 {contactLinks.map(({ icon: Icon, label, href, display }) => (
                   <a
@@ -148,13 +166,22 @@ export default function Contact() {
                 <span className="ml-2 text-txt-muted">nikhil.sh</span>
               </div>
               <div className="space-y-1.5">
-                <p className="text-txt-muted"><span style={{ color: "#00d4ff" }}>$</span> whoami</p>
+                <p className="text-txt-muted">
+                  <span style={{ color: "#00d4ff" }}>$</span> whoami
+                </p>
                 <p className="text-white">nikhil_maurya</p>
-                <p className="text-txt-muted"><span style={{ color: "#00d4ff" }}>$</span> status</p>
+                <p className="text-txt-muted">
+                  <span style={{ color: "#00d4ff" }}>$</span> status
+                </p>
                 <p className="text-green-400">● Available for work</p>
-                <p className="text-txt-muted"><span style={{ color: "#00d4ff" }}>$</span> location</p>
+                <p className="text-txt-muted">
+                  <span style={{ color: "#00d4ff" }}>$</span> location
+                </p>
                 <p className="text-white">Lucknow, India 🇮🇳</p>
-                <p className="text-txt-muted"><span style={{ color: "#00d4ff" }}>$</span> <span className="animate-blink">_</span></p>
+                <p className="text-txt-muted">
+                  <span style={{ color: "#00d4ff" }}>$</span>{" "}
+                  <span className="animate-blink">_</span>
+                </p>
               </div>
             </div>
           </div>
@@ -162,13 +189,17 @@ export default function Contact() {
           {/* Right — Form */}
           <div className="reveal">
             <div className="border border-border bg-card rounded-2xl p-6">
-              <h3 className="font-display text-lg font-bold text-white mb-6">Send a Message</h3>
+              <h3 className="font-display text-lg font-bold text-white mb-6">
+                Send a Message
+              </h3>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
 
                 {/* Name */}
                 <div>
-                  <label className="font-mono text-xs text-txt-muted mb-1.5 block">Your Name</label>
+                  <label className="font-mono text-xs text-txt-muted mb-1.5 block">
+                    Your Name
+                  </label>
                   <input
                     type="text"
                     name="name"
@@ -177,12 +208,16 @@ export default function Contact() {
                     placeholder="John Doe"
                     className={inputClass(errors.name)}
                   />
-                  {errors.name && <p className="font-mono text-xs text-red-400 mt-1">{errors.name}</p>}
+                  {errors.name && (
+                    <p className="font-mono text-xs text-red-400 mt-1">{errors.name}</p>
+                  )}
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="font-mono text-xs text-txt-muted mb-1.5 block">Email Address</label>
+                  <label className="font-mono text-xs text-txt-muted mb-1.5 block">
+                    Email Address
+                  </label>
                   <input
                     type="email"
                     name="email"
@@ -191,12 +226,16 @@ export default function Contact() {
                     placeholder="john@example.com"
                     className={inputClass(errors.email)}
                   />
-                  {errors.email && <p className="font-mono text-xs text-red-400 mt-1">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="font-mono text-xs text-red-400 mt-1">{errors.email}</p>
+                  )}
                 </div>
 
                 {/* Message */}
                 <div>
-                  <label className="font-mono text-xs text-txt-muted mb-1.5 block">Message</label>
+                  <label className="font-mono text-xs text-txt-muted mb-1.5 block">
+                    Message
+                  </label>
                   <textarea
                     name="message"
                     value={form.message}
@@ -205,14 +244,18 @@ export default function Contact() {
                     placeholder="Tell me about your project or opportunity..."
                     className={inputClass(errors.message)}
                   />
-                  {errors.message && <p className="font-mono text-xs text-red-400 mt-1">{errors.message}</p>}
+                  {errors.message && (
+                    <p className="font-mono text-xs text-red-400 mt-1">{errors.message}</p>
+                  )}
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={status === "loading" || status === "success"}
-                  className={`btn-primary flex items-center justify-center gap-2 mt-2 disabled:opacity-60 disabled:cursor-not-allowed ${status === "loading" ? "animate-pulse" : ""}`}
+                  className={`btn-primary flex items-center justify-center gap-2 mt-2 disabled:opacity-60 disabled:cursor-not-allowed ${
+                    status === "loading" ? "animate-pulse" : ""
+                  }`}
                 >
                   {status === "loading" ? (
                     <>
@@ -232,9 +275,15 @@ export default function Contact() {
                   )}
                 </button>
 
-                {/* Success Message */}
+                {/* Success */}
                 {status === "success" && (
-                  <div className="flex items-center gap-2 p-3 rounded-lg" style={{ backgroundColor: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.3)" }}>
+                  <div
+                    className="flex items-center gap-2 p-3 rounded-lg"
+                    style={{
+                      backgroundColor: "rgba(74,222,128,0.1)",
+                      border: "1px solid rgba(74,222,128,0.3)",
+                    }}
+                  >
                     <CheckCircle size={14} className="text-green-400 flex-shrink-0" />
                     <p className="font-mono text-xs text-green-400">
                       Thanks! I'll get back to you soon. ✓
@@ -242,12 +291,24 @@ export default function Contact() {
                   </div>
                 )}
 
-                {/* Error Message */}
+                {/* Error */}
                 {status === "error" && (
-                  <div className="flex items-center gap-2 p-3 rounded-lg" style={{ backgroundColor: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)" }}>
+                  <div
+                    className="flex items-center gap-2 p-3 rounded-lg"
+                    style={{
+                      backgroundColor: "rgba(248,113,113,0.1)",
+                      border: "1px solid rgba(248,113,113,0.3)",
+                    }}
+                  >
                     <AlertCircle size={14} className="text-red-400 flex-shrink-0" />
                     <p className="font-mono text-xs text-red-400">
-                      Something went wrong. Please try again or email me directly.
+                      Something went wrong. Please email me at{" "}
+                      <a
+                        href="mailto:ecnikhilmaurya007@gmail.com"
+                        style={{ color: "#00d4ff" }}
+                      >
+                        ecnikhilmaurya007@gmail.com
+                      </a>
                     </p>
                   </div>
                 )}
