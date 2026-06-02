@@ -68,22 +68,24 @@ export default function Contact() {
 
     setStatus("loading");
     try {
-      const res = await fetch("https://formspree.io/f/xgoqgnnl", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
         body: JSON.stringify({
+          access_key: "9cb87bbc-eb30-4148-846e-47d8d8dd0ad0",
           name: form.name,
           email: form.email,
           message: form.message,
+          subject: `New Portfolio Message from ${form.name}`,
         }),
       });
 
       const data = await res.json();
 
-      if (res.ok && data.ok) {
+      if (data.success) {
         setStatus("success");
         setForm({ name: "", email: "", message: "" });
         setTimeout(() => setStatus(null), 5000);
@@ -302,13 +304,7 @@ export default function Contact() {
                   >
                     <AlertCircle size={14} className="text-red-400 flex-shrink-0" />
                     <p className="font-mono text-xs text-red-400">
-                      Something went wrong. Please email me at{" "}
-                      <a
-                        href="mailto:ecnikhilmaurya007@gmail.com"
-                        style={{ color: "#00d4ff" }}
-                      >
-                        ecnikhilmaurya007@gmail.com
-                      </a>
+                      Something went wrong. Please email me directly at ecnikhilmaurya007@gmail.com
                     </p>
                   </div>
                 )}
