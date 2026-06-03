@@ -8,7 +8,7 @@ export const personalInfo = {
   phone: "+91-9621715394",
   github: "https://github.com/Nikhil00789",
   linkedin: "https://linkedin.com/in/nikhilmaurya23",
-  resumeFile: "/Nikhil_Maurya_Resume.pdf", // place your PDF in /public folder
+  resumeFile: "/Nikhil_Maurya.pdf", // place your PDF in /public folder
 };
 
 export const skills = [
